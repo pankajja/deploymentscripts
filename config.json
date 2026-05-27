@@ -1,0 +1,13 @@
+{
+    "templateFiles": [
+        "application.template.properties"
+    ],
+    "application.template.properties": [
+        "env.applRoot",
+        "env.environment",
+        "coredb.dbName",
+        "coredb.dbPort",
+        "coredb.userName",
+        "hosts.db2Host"
+    ]
+}
