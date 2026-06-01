@@ -1,0 +1,2 @@
+print('DEBUG CHECK - compDir:', compDir, '| exists:', os.path.exists(compDir), '| islink:', os.path.islink(compDir))
+print('DEBUG CHECK - compVersionDir:', compVersionDir, '| exists:', os.path.exists(compVersionDir))
