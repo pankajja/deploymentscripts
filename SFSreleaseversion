@@ -1,0 +1,80 @@
+You can present it something like this:
+Current State
+We have three components:
+TFG
+PCT
+SFS Common
+TFG and PCT currently have hardcoded project versions in their respective pom.xml files.
+Example:
+XML
+<version>0.1.0</version>
+SFS Common already uses a version property:
+XML
+<version>${sfs.common.version}</version>
+Both TFG and PCT consume SFS Common as a dependency and reference:
+XML
+${sfs.common.version}
+for resolving the SFS Common artifact version.
+Requirement
+We want TFG and PCT project versions to be dynamically controlled during build execution.
+Instead of hardcoded project versions, the version should be supplied as a build parameter.
+Example:
+Bash
+mvn clean install -Drelease.version=1.2.0
+The supplied version should be used for:
+Generated JAR artifacts
+Generated TAR/Assembly artifacts
+Maven project version metadata
+Proposed Approach
+Component Version
+Replace hardcoded versions in TFG and PCT with:
+XML
+<version>${release.version}</version>
+This allows the component version to be controlled externally during the build.
+SFS Common Version
+Continue using the existing approach:
+XML
+<version>${sfs.common.version}</version>
+for the SFS Common dependency.
+Expected Build Behavior
+Build Command
+Bash
+mvn clean install \
+  -Drelease.version=1.2.0 \
+  -Dsfs.common.version=1.0.0
+Result
+Artifact
+Version
+TFG
+1.2.0
+PCT
+1.2.0
+SFS Common Dependency
+1.0.0
+Generated artifacts:
+Plain text
+tfg-1.2.0.jar
+tfg-1.2.0.tar
+
+pct-1.2.0.jar
+pct-1.2.0.tar
+while resolving:
+Plain text
+com.cls.sfs:sfscommon:1.0.0
+as the dependency.
+Version Strategy Going Forward
+Two independent version variables will be maintained:
+Variable
+Purpose
+release.version
+Controls TFG and PCT artifact versions
+sfs.common.version
+Controls SFS Common dependency version
+This allows:
+Independent versioning of application components (TFG/PCT)
+Independent versioning of the shared Common library
+Flexible upgrades of SFS Common without forcing application version changes
+Stakeholder Confirmation Required
+Confirm that TFG and PCT should use release.version as their project/artifact version.
+Confirm that SFS Common should continue to use sfs.common.version as an independent dependency version.
+Confirm that build pipelines will supply both version parameters when required
