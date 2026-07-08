@@ -1,0 +1,26 @@
+# Generate keytab
+./sfs_ops.sh --env cit01 --action keytab --dbUser sfsdbcit1
+
+# Stop (PCT → TFG)
+./sfs_ops.sh --env cit01 --action stop
+
+# Start (TFG → PCT)
+./sfs_ops.sh --env cit01 --action start
+
+cit*, sit*, uat*  →  CLSNONPROD.LOCAL
+prod*             →  CLSPROD.LOCAL
+
+log()            Timestamped logging — INFO / ERROR
+usage()          Prints help and exits
+parse_args()      Parses --env, --action, --dbUser
+alidate_args()    Validates required args + $APP_HOME check
+get_domain()    Derives domain from env name
+action_keytab()    Generates keytab file
+action_stop()      Stops PCT then TFG
+action_start()    Starts TFG then PCT
+main()          Entry point — routes to action
+
+
+KT_PASSWD=`dzdo /bin/cgetaccount -s -T domain <DOMAIN>/<dbUser>`
+PRINCIPAL="<dbUser>@<DOMAIN>"
+wkt /cls/appl/env/rds_usr_keytab/<dbUser>_auto.keytab
