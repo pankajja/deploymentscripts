@@ -24,3 +24,21 @@ main()          Entry point — routes to action
 KT_PASSWD=`dzdo /bin/cgetaccount -s -T domain <DOMAIN>/<dbUser>`
 PRINCIPAL="<dbUser>@<DOMAIN>"
 wkt /cls/appl/env/rds_usr_keytab/<dbUser>_auto.keytab
+Flow : 
+sfsinstl user                          sfsapp user
+(installation privileges)              (application runtime user)
+        │
+        ├── runs sfs_ops.sh            ← script executed by sfsinstl
+        │
+        ├── --action keytab            ← runs as sfsinstl
+        │       dzdo /bin/cgetaccount  ← sfsinstl switches via dzdo
+        │
+        ├── --action stop
+        │       dzdo -iu sfsapp        ← switches to sfsapp 
+        │           stop_pct.sh        ← runs as sfsapp
+        │           stop_tfg.sh        ← runs as sfsapp
+        │
+        └── --action start
+                dzdo -iu sfsapp        ← switches to sfsapp 
+                    start_tfg.sh       ← runs as sfsapp
+                    start_pct.sh       ← runs as sfsapp
