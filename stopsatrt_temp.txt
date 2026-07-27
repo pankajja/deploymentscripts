@@ -1,0 +1,60 @@
+# Create bin directories
+mkdir -p $APP_HOME/tfg/bin
+mkdir -p $APP_HOME/pct/bin
+mkdir -p $APP_HOME/su/bin
+
+# start_tfg.sh
+cat > $APP_HOME/tfg/bin/start_tfg.sh << 'EOF'
+#!/bin/bash
+echo "Starting TFG..."
+nohup bash -c 'exec -a TemplateFileGenerator sleep 3600' &
+echo "TFG started with PID: $!"
+EOF
+
+# start_pct.sh
+cat > $APP_HOME/pct/bin/start_pct.sh << 'EOF'
+#!/bin/bash
+echo "Starting PCT..."
+nohup bash -c 'exec -a PayoutContingencyTransformer sleep 3600' &
+echo "PCT started with PID: $!"
+EOF
+
+# start_su.sh
+cat > $APP_HOME/su/bin/start_su.sh << 'EOF'
+#!/bin/bash
+echo "Starting SU..."
+nohup bash -c 'exec -a StatementUtility sleep 3600' &
+echo "SU started with PID: $!"
+EOF
+
+# stop_tfg.sh
+cat > $APP_HOME/tfg/bin/stop_tfg.sh << 'EOF'
+#!/bin/bash
+echo "Stopping TFG..."
+pkill -f TemplateFileGenerator
+echo "TFG stopped"
+EOF
+
+# stop_pct.sh
+cat > $APP_HOME/pct/bin/stop_pct.sh << 'EOF'
+#!/bin/bash
+echo "Stopping PCT..."
+pkill -f PayoutContingencyTransformer
+echo "PCT stopped"
+EOF
+
+# stop_su.sh
+cat > $APP_HOME/su/bin/stop_su.sh << 'EOF'
+#!/bin/bash
+echo "Stopping SU..."
+pkill -f StatementUtility
+echo "SU stopped"
+EOF
+
+# Set permissions
+chmod 750 $APP_HOME/tfg/bin/*.sh
+chmod 750 $APP_HOME/pct/bin/*.sh
+chmod 750 $APP_HOME/su/bin/*.sh
+
+echo "All dummy scripts created!"
+ls -la $APP_HOME/tfg/bin/
