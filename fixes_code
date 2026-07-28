@@ -1,0 +1,24 @@
+def startComponent(comp):
+    startScript = APP_HOME + '/' + comp + '/bin/start_' + comp + '.sh'
+    log('INFO', 'Starting ' + comp.upper() + ': ' + startScript)
+
+    if not os.path.isfile(startScript):
+        log('ERROR', 'Start script not found: ' + startScript)
+        sys.exit(1)
+
+    # Use Popen — non-blocking for background start scripts
+    proc = subprocess.Popen(
+        startScript,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+    )
+    try:
+        stdout, stderr = proc.communicate(timeout=10)  # wait max 10 seconds
+    except subprocess.TimeoutExpired:
+        proc.kill()   # kill the shell wrapper — background process keeps running
+        log('INFO', comp.upper() + ' start script launched')
+
+    log('INFO', comp.upper() + ' started successfully')
+
+    ------------------------
