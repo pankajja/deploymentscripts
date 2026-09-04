@@ -1,0 +1,8 @@
+PRJ706 provides a “Settle-Forward” solution to continue the settlement process when the ABCSettlement System or Kyndryl data centers experience a critical failure and the normal “Fix-Forward” approach is not possible.
+
+Scope
+The process starts with Pay-in Reconciliation to manually verify member obligations and identify any payouts made before the outage.
+The detailed reconciliation process is out of scope and will be covered separately by ABC Operations.
+This design only covers the XML-to-columnar data transformation required for reconciliation.
+No process is defined to update or restore ABCSettlement PQR databases with data generated during Settle-Forward.
+Once ABCSettlement is restored, the expectation is to clean up the PQR data, and Settle-Forward-generated data will not be restored.
