@@ -21,3 +21,20 @@ fixPermissions()
     log('INFO', 'ACL applied successfully: ' + devGroup + ' → rx on ' + configTargetDir)
 
     log('INFO', '--- SFS Config Deployment Completed Successfully ---')
+
+{
+    "env": {
+        "name": "cit"
+    },
+    "envjson": {
+        "cit":  "sfsdevgp",
+        "sit":  "sfsdevgp",
+        "jas":  "sfsl3gp",
+        "prod": "sfsl3gp"
+    },
+    "logger": {
+        "logRoot":      "/cls/appl/logs",
+        "opslogDir":    "/cls/appl/logs/opslog",
+        "deploylogDir": "/cls/appl/deploylogs"
+    }
+}
