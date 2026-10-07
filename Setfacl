@@ -1,0 +1,23 @@
+fixPermissions()
+
+    # Step 5: Grant read-only access to dev group on sfsconfig dir
+    # Read env name and derive dev group from envInfo.json
+    envName  = getEnvInfo('env', 'name')       # e.g. 'cit'
+    devGroup = getEnvInfo('envjson', envName)   # e.g. 'sfsdevgp'
+
+    if not envName:
+        log('DEBUG', 'ERROR: env.name not found in envInfo.json')
+        sys.exit(1)
+    if not devGroup:
+        log('DEBUG', 'ERROR: No dev group found in envjson for env: ' + envName)
+        sys.exit(1)
+
+    log('INFO', 'Applying ACL for dev group: ' + devGroup + ' on: ' + configTargetDir)
+    cmd = 'setfacl -R -m g:' + devGroup + ':rx ' + configTargetDir
+    status, result = executeCommand(cmd)
+    if status != 0:
+        log('DEBUG', 'ERROR: Failed to apply ACL on: ' + configTargetDir)
+        sys.exit(1)
+    log('INFO', 'ACL applied successfully: ' + devGroup + ' → rx on ' + configTargetDir)
+
+    log('INFO', '--- SFS Config Deployment Completed Successfully ---')
